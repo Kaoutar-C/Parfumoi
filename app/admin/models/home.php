@@ -12,11 +12,7 @@ function adminCountOperators($pdo)
     return $pdo->query($sql)->fetch()['total'];
 }
 
-function adminCountMessages($pdo)
-{
-    $sql = "SELECT COUNT(*) AS total FROM message";
-    return $pdo->query($sql)->fetch()['total'];
-}
+
 
 function adminCountBlockedOperators($pdo)
 {

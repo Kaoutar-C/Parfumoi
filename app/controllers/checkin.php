@@ -16,7 +16,7 @@ function checkin_login($pdo)
 
             if ($operator['is_admin'] === 1) {
                 $_SESSION['is_admin'] = true;
-                redirect('/admin/home');
+                
             } 
             redirect('/home');
         }

@@ -3,7 +3,7 @@
 session_start();
 
 require_once __DIR__ . '/../../../config/data.php';
-require_once __DIR__ . '/../../models/admin/brand.php';
+require_once __DIR__ . '/../../admin/models/brand.php';
 
 if (!isset($_SESSION['admin_id'])) {
     header('Location: /admin/login');
@@ -28,4 +28,4 @@ ob_start();
 require __DIR__ . '/../../views/admin/brands.php';
 $page_content = ob_get_clean();
 
-require __DIR__ . '/../../views/admin/_layout.php';
+require __DIR__ . '/../../admin/views/_layout.php';

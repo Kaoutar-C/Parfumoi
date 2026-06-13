@@ -3,10 +3,10 @@
 session_start();
 
 require_once __DIR__ . '/../../../config/data.php';
-require_once __DIR__ . '/../../models/admin/item.php';
-require_once __DIR__ . '/../../models/admin/brand.php';
-require_once __DIR__ . '/../../models/admin/operator.php';
-require_once __DIR__ . '/../../models/admin/reference.php';
+require_once __DIR__ . '/../../admin/models/item.php';
+require_once __DIR__ . '/../../admin/models/brand.php';
+require_once __DIR__ . '/../../admin/models/operator.php';
+require_once __DIR__ . '/../../admin/models/reference.php';
 
 if (!isset($_SESSION['admin_id'])) {
     header('Location: /admin/login');
@@ -58,17 +58,17 @@ if ($action === 'add' || $action === 'edit') {
     $tags = getAllTags($pdo);
 
     ob_start();
-    require __DIR__ . '/../../views/admin/item_form.php';
+    require __DIR__ . '/../../admin/views/item_form.php';
     $page_content = ob_get_clean();
 
-    require __DIR__ . '/../../views/admin/_layout.php';
+    require __DIR__ . '/../../admin/views/_layout.php';
     exit;
 }
 
 $items = getAllAdminItems($pdo);
 
 ob_start();
-require __DIR__ . '/../../views/admin/items.php';
+require __DIR__ . '/../../admin/views/items.php';
 $page_content = ob_get_clean();
 
-require __DIR__ . '/../../views/admin/_layout.php';
+require __DIR__ . '/../../admin/views/_layout.php';

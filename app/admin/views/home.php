@@ -15,10 +15,6 @@
             <td><?= $totalOperators ?></td>
         </tr>
         <tr>
-            <td>Messages</td>
-            <td><?= $totalMessages ?></td>
-        </tr>
-        <tr>
             <td>Comptes bloqués</td>
             <td><?= $totalBlockedOperators ?></td>
         </tr>
@@ -34,7 +30,7 @@
         <li><a href="/admin/operators?action=add">Ajouter un utilisateur</a></li>
         <li><a href="/admin/operators">Gérer les utilisateurs</a></li>
         <li><a href="/admin/brands">Gérer les marques</a></li>
-        <li><a href="/admin/messages">Voir les messages</a></li>
+       
     </ul>
 </section>
 

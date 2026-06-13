@@ -3,7 +3,7 @@
 session_start();
 
 require_once __DIR__ . '/../../../config/data.php';
-require_once __DIR__ . '/../../models/admin/operator.php';
+require_once __DIR__ . '/../../admin/models/operator.php';
 
 if (!isset($_SESSION['admin_id'])) {
     header('Location: /admin/login');
@@ -50,17 +50,17 @@ if ($action === 'add' || $action === 'edit') {
     }
 
     ob_start();
-    require __DIR__ . '/../../views/admin/operator_form.php';
+    require __DIR__ . '/../../admin/views/operator_form.php';
     $page_content = ob_get_clean();
 
-    require __DIR__ . '/../../views/admin/_layout.php';
+    require __DIR__ . '/../../admin/views/_layout.php';
     exit;
 }
 
 $operators = getAllOperators($pdo);
 
 ob_start();
-require __DIR__ . '/../../views/admin/operators.php';
+require __DIR__ . '/../../admin/views/operators.php';
 $page_content = ob_get_clean();
 
-require __DIR__ . '/../../views/admin/_layout.php';
+require __DIR__ . '/../../admin/views/_layout.php';
