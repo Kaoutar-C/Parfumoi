@@ -3,28 +3,29 @@
 require_once __DIR__ . '/../models/operator.php';
 function checkin_login($pdo)
 {
-    
+
 
     if (is_post()) {
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
         $operator = operator_find_by_email($pdo, $email);
 
-        
+
         if ($operator && $operator['is_active'] === 1 && password_verify($password, $operator['password'])) {
-           set_logged($operator);
+            set_logged($operator);
 
             if ($operator['is_admin'] === 1) {
                 $_SESSION['is_admin'] = true;
-                
-            } 
+            }
             redirect('/home');
+
+
         }
-    
+        redirect('/checkin/login');
 
     }
 
-    return render('app/views/connection.php');
+    return render('app/views/connection.php', []);
 }
 
 function checkin_logout()
@@ -50,9 +51,7 @@ function checkin_sign($pdo)
             ':email' => $email,
             ':password' => $hashed_password,
         ]);
-
-       header('Location: /home/index');
-        exit;
+        redirect('/checkin/login');
     }
 
     return render('app/views/inscription.php', []);

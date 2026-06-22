@@ -1,26 +1,36 @@
 <?php
 
-function adminCountItems($pdo)
+function adminCountAllItems(PDO $pdo): int
 {
-    $sql = "SELECT COUNT(*) AS total FROM item";
-    return $pdo->query($sql)->fetch()['total'];
+    return (int) $pdo->query("SELECT COUNT(*) FROM item")->fetchColumn();
 }
 
-function adminCountOperators($pdo)
+function adminCountItems(PDO $pdo): int
 {
-    $sql = "SELECT COUNT(*) AS total FROM operator";
-    return $pdo->query($sql)->fetch()['total'];
+    return (int) $pdo->query("SELECT COUNT(*) FROM item WHERE status = 'published'")->fetchColumn();
 }
 
-
-
-function adminCountBlockedOperators($pdo)
+function adminCountDraftItems(PDO $pdo): int
 {
-    $sql = "SELECT COUNT(*) AS total FROM operator WHERE is_active = 0";
-    return $pdo->query($sql)->fetch()['total'];
+    return (int) $pdo->query("SELECT COUNT(*) FROM item WHERE status = 'draft'")->fetchColumn();
 }
 
-function adminLastItems($pdo)
+function adminCountOperators(PDO $pdo): int
+{
+    return (int) $pdo->query("SELECT COUNT(*) FROM operator")->fetchColumn();
+}
+
+function adminCountBlockedOperators(PDO $pdo): int
+{
+    return (int) $pdo->query("SELECT COUNT(*) FROM operator WHERE is_active = 0")->fetchColumn();
+}
+
+function adminCountOperatorsWithItem(PDO $pdo): int
+{
+    return (int) $pdo->query("SELECT COUNT(DISTINCT operator_id) FROM item")->fetchColumn();
+}
+
+function adminLastItems(PDO $pdo): array
 {
     $sql = "SELECT item.*, operator.firstname, operator.lastname
             FROM item
@@ -28,4 +38,9 @@ function adminLastItems($pdo)
             ORDER BY item.created_at DESC
             LIMIT 5";
     return $pdo->query($sql)->fetchAll();
+}
+
+function adminCountPublishedItems(PDO $pdo): int
+{
+    return (int) $pdo->query("SELECT COUNT(*) FROM item WHERE status = 'published'")->fetchColumn();
 }

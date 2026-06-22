@@ -84,3 +84,16 @@ function deleteAdminItem($pdo, $id)
     $stmt = $pdo->prepare($sql);
     return $stmt->execute([$id]);
 }
+
+function adminCountItems(PDO $pdo): int
+{
+    $sql = "SELECT COUNT(*) AS total FROM item WHERE status = 'published'";
+    return (int) $pdo->query($sql)->fetch()['total'];
+}
+
+function adminCountDraftItems(PDO $pdo): int
+{
+    $sql = "SELECT COUNT(*) AS total FROM item WHERE status = 'draft'";
+    return (int) $pdo->query($sql)->fetch()['total'];
+}
+

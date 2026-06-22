@@ -11,13 +11,13 @@
     <label for="short_description">Description</label>
     <textarea id="short_description" name="short_description" placeholder="Ajoute des informations utiles"></textarea>
 
-    <label for="brands_id">Marque</label>
-    <select id="brands_id" name="brands_id" required>
-        <option value="">Sélectionne une marque</option>
+    <label for="brand_search">Marque</label>
+    <input type="text" id="brand_search" name="brand_label" list="brands_list" placeholder="Tape une marque...">
+    <datalist id="brands_list">
         <?php foreach ($brands as $brand): ?>
-            <option value="<?= $brand['id'] ?>"><?= escape($brand['label']) ?></option>
+            <option value="<?= escape($brand['label']) ?>">
         <?php endforeach; ?>
-    </select>
+    </datalist>
 
     <label for="category_id">Catégorie</label>
     <select id="category_id" name="category_id" required>
@@ -32,6 +32,14 @@
         <option value="">Sélectionne une occasion</option>
         <?php foreach ($themes as $theme): ?>
             <option value="<?= $theme['id'] ?>"><?= escape($theme['label']) ?></option>
+        <?php endforeach; ?>
+    </select>
+
+    <label for="tag_id">Famille olfactive</label>
+    <select id="tag_id" name="tag_id">
+        <option value="">Sélectionne une famille olfactive</option>
+        <?php foreach ($tags as $tag): ?>
+            <option value="<?= $tag['id'] ?>"><?= escape($tag['label']) ?></option>
         <?php endforeach; ?>
     </select>
 

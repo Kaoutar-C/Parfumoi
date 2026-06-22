@@ -14,7 +14,7 @@
 
 <section class="mes-annonces">
     <h2>Mes annonces (<?= count($items) ?>)</h2>
-    <div class="catalogue">
+    <div class="grille">
         <?php foreach ($items as $item): ?>
             <article>
                 <a href="/product/index/<?= $item['id'] ?>">
@@ -22,31 +22,33 @@
                     <h3><?= escape($item['label']) ?></h3>
                     <p><?= escape($item['price']) ?> €</p>
                 </a>
+                <a href="/annonce/delete/<?= $item['id'] ?>">Supprimer</a>
             </article>
         <?php endforeach; ?>
         <?php if (empty($items)): ?>
             <p>Aucune annonce pour l'instant.</p>
         <?php endif; ?>
     </div>
-    <a href="/annonce">+ Ajouter une annonce</a>
+    <a href="/annonce/index">+ Ajouter une annonce</a>
 </section>
 
-<section class="historique">
-    <h2>Historique</h2>
-    <div class="catalogue">
-        <?php foreach ($historique as $item): ?>
+<section class="mes-favoris">
+    <h2>Mes favoris</h2>
+    <div class="grille">
+        <?php foreach ($favoris as $item): ?>
             <article>
                 <a href="/product/index/<?= $item['id'] ?>">
                     <img src="/public/images/<?= escape($item['main_image'] ?? 'default.jpg') ?>" alt="<?= escape($item['label']) ?>">
                     <h3><?= escape($item['label']) ?></h3>
+                    <p><?= escape($item['brand_name'] ?? '') ?></p>
                     <p><?= escape($item['price']) ?> €</p>
                 </a>
             </article>
         <?php endforeach; ?>
-        <?php if (empty($historique)): ?>
-            <p>Aucun parfum consulté pour l'instant.</p>
+        <?php if (empty($favoris)): ?>
+            <p>Aucun favori pour l'instant.</p>
         <?php endif; ?>
     </div>
 </section>
 
-<a href="/deconnexion">Se déconnecter</a>
+<a href="/checkin/logout">Se déconnecter</a>

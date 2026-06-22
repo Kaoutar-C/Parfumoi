@@ -14,7 +14,7 @@ function get_item_by_id($pdo, $id)
 
 function get_operator_by_item($pdo, $operator_id)
 {
-    $stmt = $pdo->prepare('SELECT id, firstname, lastname, phone FROM operator WHERE id = ?');
+    $stmt = $pdo->prepare('SELECT id, firstname, lastname, phone, email, avatar, created_at FROM operator WHERE id = ?');
     $stmt->execute([$operator_id]);
     return $stmt->fetch();
 }
@@ -29,4 +29,16 @@ function add_to_historique($pdo, $operator_id, $item_id)
         $stmt2 = $pdo->prepare('INSERT IGNORE INTO collection_item (collection_id, item_id) VALUES (?, ?)');
         $stmt2->execute([$collection['id'], $item_id]);
     }
+}
+
+function get_tags_by_item($pdo, $item_id)
+{
+    $stmt = $pdo->prepare('
+        SELECT tag.label 
+        FROM tag
+        JOIN taguer ON tag.id = taguer.tag_id
+        WHERE taguer.item_id = ?
+    ');
+    $stmt->execute([$item_id]);
+    return $stmt->fetchAll();
 }

@@ -1,68 +1,39 @@
-<section>
-    <h2>Résumé général</h2>
+<section class="dashboard">
 
-    <table border="1" cellpadding="8" cellspacing="0">
-        <tr>
-            <th>Indicateur</th>
-            <th>Valeur</th>
-        </tr>
-        <tr>
-            <td>Annonces</td>
-            <td><?= $totalItems ?></td>
-        </tr>
-        <tr>
-            <td>Utilisateurs</td>
-            <td><?= $totalOperators ?></td>
-        </tr>
-        <tr>
-            <td>Comptes bloqués</td>
-            <td><?= $totalBlockedOperators ?></td>
-        </tr>
-    </table>
-</section>
+    <h1>Dashboard</h1>
 
-<section>
-    <h2>Actions rapides</h2>
+    <div class="dashboard-cards">
 
-    <ul>
-        <li><a href="/admin/items?action=add">Ajouter une annonce</a></li>
-        <li><a href="/admin/items">Gérer les annonces</a></li>
-        <li><a href="/admin/operators?action=add">Ajouter un utilisateur</a></li>
-        <li><a href="/admin/operators">Gérer les utilisateurs</a></li>
-        <li><a href="/admin/brands">Gérer les marques</a></li>
-       
-    </ul>
-</section>
+        <!-- Carte 1 : total depuis ouverture — pas cliquable -->
+        <div class="card card--info">
+            <span class="card-number"><?= $totalAllItems ?></span>
+            <span class="card-label">Annonces depuis l'ouverture</span>
+        </div>
 
-<section>
-    <h2>Dernières annonces</h2>
+        <!-- Carte 2 : annonces en ligne — cliquable -->
+        <a href="/admin/items" class="card card--link">
+            <span class="card-number"><?= $totalPublishedItems ?></span>
+            <span class="card-label">Annonces en ligne</span>
+        </a>
 
-    <table border="1" cellpadding="8" cellspacing="0">
-        <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Prix</th>
-            <th>Statut</th>
-            <th>Vendeur</th>
-            <th>Actions</th>
-        </tr>
+        <!-- Carte 3 : en attente de vérification — cliquable -->
+        <a href="/admin/items" class="card card--link card--warning">
+            <span class="card-number"><?= $totalDraftItems ?></span>
+            <span class="card-label">En attente de vérification</span>
+        </a>
 
-        <?php foreach ($lastItems as $item): ?>
-            <tr>
-                <td><?= $item['id'] ?></td>
-                <td><?= htmlspecialchars($item['label']) ?></td>
-                <td><?= htmlspecialchars($item['prix']) ?> €</td>
-                <td><?= htmlspecialchars($item['status']) ?></td>
-                <td>
-                    <?= htmlspecialchars($item['firstname'] ?? '') ?>
-                    <?= htmlspecialchars($item['lastname'] ?? '') ?>
-                </td>
-                <td>
-                    <a href="/admin/items?action=edit&id=<?= $item['id'] ?>">Modifier</a> |
-                    <a href="/admin/items?action=disable&id=<?= $item['id'] ?>">Désactiver</a> |
-                    <a href="/admin/items?action=delete&id=<?= $item['id'] ?>">Supprimer</a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    </table>
+        <!-- Carte 4 : total utilisateurs — cliquable -->
+        <a href="/admin/operators" class="card card--link">
+            <span class="card-number"><?= $totalOperators ?></span>
+            <span class="card-label">Utilisateurs</span>
+        </a>
+
+        <!-- Carte 5 : utilisateurs avec une annonce — cliquable -->
+        <a href="/admin/operators" class="card card--link">
+            <span class="card-number"><?= $totalOperatorsWithItem ?></span>
+            <span class="card-label">Utilisateurs avec une annonce</span>
+        </a>
+
+    </div>
+
 </section>

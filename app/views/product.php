@@ -1,17 +1,50 @@
-<article>
-    <img src="/public/images/<?= escape($item['main_image'] ?? 'default.jpg') ?>" alt="<?= escape($item['label']) ?>">
-    <h2><?= escape($item['label']) ?></h2>
-    <p><?= escape($item['brand_name'] ?? '') ?></p>
-    <p><?= escape($item['price']) ?> €</p>
-    <p><?= escape($item['item_condition']) ?></p>
-    <p><?= escape($item['short_description'] ?? '') ?></p>
-    <p><?= escape($item['content'] ?? '') ?></p>
-    <p>Numéro de série : <?= escape($item['batch_code'] ?? '') ?></p>
-</article>
+<div class="product-page">
+    <div class="product-top">
+        <div class="product-image">
+            <img src="/public/images/<?= escape($item['main_image'] ?? 'default.jpg') ?>" 
+                 alt="<?= escape($item['label']) ?>"
+                 onclick="this.requestFullscreen()"
+                 style="cursor: zoom-in;">
+        </div>
+        <div class="product-info">
+            <h1><?= escape($item['label']) ?></h1>
+            <p class="product-price"><?= escape($item['price']) ?> €</p>
 
-<section class="vendeur">
-    <h3>Vendeur</h3>
-    <p><?= escape($operator['firstname']) ?> <?= escape($operator['lastname']) ?></p>
-    <p>Téléphone : <?= escape($operator['phone'] ?? 'Non renseigné') ?></p>
-    <a href="/vendre/<?= $operator['id'] ?>">Voir le profil du vendeur</a>
-</section>
+            <div class="product-vendeur-card">
+                <img src="/public/images/<?= escape($operator['avatar'] ?? 'avatar.jpeg') ?>" alt="avatar">
+                <div>
+                    <p class="vendeur-nom"><?= escape($operator['firstname']) ?> <?= escape($operator['lastname']) ?></p>
+                    <p class="vendeur-email">📧 <?= escape($operator['email'] ?? '') ?></p>
+                    <p class="vendeur-membre">Membre depuis <?= date('Y', strtotime($operator['created_at'] ?? 'now')) ?></p>
+                </div>
+            </div>
+
+            <div class="product-description">
+                <h3>Description</h3>
+                <p><?= escape($item['short_description'] ?? 'Aucune description disponible.') ?></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-details">
+        <h2>Détails du parfum</h2>
+        <table>
+            <tr>
+                <td>Marque</td>
+                <td><?= escape($item['brand_name'] ?? 'Non renseigné') ?></td>
+            </tr>
+            <tr>
+                <td>État</td>
+                <td><?= escape($item['item_condition']) ?></td>
+            </tr>
+            <tr>
+                <td>Numéro de série</td>
+                <td><?= escape($item['batch_code'] ?? 'Non renseigné') ?></td>
+            </tr>
+            <tr>
+                <td>Contenance</td>
+                <td><?= escape($item['quantity'] ?? 'Non renseigné') ?> %</td>
+            </tr>
+        </table>
+    </div>
+</div>

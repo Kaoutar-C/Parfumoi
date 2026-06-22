@@ -27,14 +27,9 @@ $route = route($segments);
 
 $main = run($route, $base, $pdo);
 
-if ($route['entity'] === 'checkin')    
-{
-    $body = $main;
-}
-else
-{
-    $body = render($base.'/views/_layout.php', ['page_content' => $main]);
-}
+$body = render($base . '/views/_layout.php', ['page_content' => $main]);
+
+
 
 http_out(200, $body);
 exit;
