@@ -52,3 +52,20 @@ function operator_update_password($pdo, $id, $hashed_password)
         'password' => $hashed_password,
     ]);
 }
+
+function operator_create(PDO $pdo, array $data): void
+{
+    $hashed_password = password_hash($data['password'], PASSWORD_DEFAULT);
+
+    $stmt = $pdo->prepare(
+        'INSERT INTO operator (firstname, lastname, email, password, avatar, created_at, is_active, is_admin)
+         VALUES (:firstname, :lastname, :email, :password, :avatar, NOW(), 1, 0)'
+    );
+    $stmt->execute([
+        ':firstname' => $data['firstname'] ?? '',
+        ':lastname'  => $data['lastname']  ?? '',
+        ':email'     => $data['email']     ?? '',
+        ':password'  => $hashed_password,
+        ':avatar'    => $data['avatar']    ?? 'femme.jpeg',
+    ]);
+}
