@@ -171,7 +171,6 @@ article img {
     background: white;
 }
 
-/* Ligne de séparation entre la photo et les infos */
 article .article-body {
     border-top: 2px solid #9B59B6;
     padding: 8px 10px 10px;
@@ -291,11 +290,12 @@ article p {
     padding: 40px;
 }
 
+/* ===== FORMULAIRES CONNEXION & INSCRIPTION ===== */
 .form-page {
-    max-width: 500px;
+    max-width: 680px;
     width: 100%;
     background: white;
-    padding: 32px;
+    padding: 48px;
     border-radius: 8px;
     border: 1px solid #E4C7FC;
     box-shadow: 0 4px 16px rgba(82, 48, 91, 0.1);
@@ -304,13 +304,13 @@ article p {
 .form-page h1 {
     color: #52305B;
     margin-bottom: 20px;
-    font-size: 24px;
+    font-size: 28px;
 }
 
 .form-page p {
     text-align: center;
     margin-top: 16px;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .form-page a {
@@ -319,7 +319,7 @@ article p {
 }
 
 form label {
-    font-size: 13px;
+    font-size: 14px;
     color: #52305B;
     font-weight: bold;
     display: block;
@@ -334,10 +334,10 @@ form input[type=number],
 form select,
 form textarea {
     width: 100%;
-    padding: 9px 14px;
+    padding: 11px 16px;
     border: 1px solid #E4C7FC;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 14px;
     background-color: white;
     outline: none;
 }
@@ -346,11 +346,11 @@ form button[type=submit] {
     background-color: #52305B;
     color: white;
     border: none;
-    padding: 10px 24px;
+    padding: 12px 24px;
     border-radius: 20px;
     cursor: pointer;
-    font-size: 13px;
-    margin-top: 16px;
+    font-size: 14px;
+    margin-top: 20px;
     width: 100%;
 }
 
@@ -677,6 +677,7 @@ form button[type=submit] {
     .profil { padding: 24px 20px; }
     .infos-verifiees, .mes-annonces, .mes-favoris { margin: 12px 20px; padding: 20px 20px; }
     .product-page { padding: 0 16px; margin: 20px auto; }
+    .form-page { padding: 32px 24px; }
 }
 
 @media (max-width: 480px) {
@@ -685,7 +686,7 @@ form button[type=submit] {
     .grille { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .catalogue { padding: 16px 12px; }
     .form-page-wrapper { padding: 20px 12px; }
-    .form-page { padding: 24px 16px; }
+    .form-page { padding: 24px 16px; max-width: 100%; }
     .product-info h1 { font-size: 22px; }
     .product-price { font-size: 22px; }
 }
