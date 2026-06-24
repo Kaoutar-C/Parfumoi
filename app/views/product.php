@@ -1,10 +1,8 @@
 <div class="product-page">
     <div class="product-top">
         <div class="product-image">
-            <img src="/public/images/<?= escape($item['main_image'] ?? 'default.jpg') ?>" 
-                 alt="<?= escape($item['label']) ?>"
-                 onclick="this.requestFullscreen()"
-                 style="cursor: zoom-in;">
+            <img src="/public/images/<?= escape($item['main_image'] ?? 'default.jpg') ?>"
+                alt="<?= escape($item['label']) ?>" onclick="this.requestFullscreen()" style="cursor: zoom-in;">
         </div>
         <div class="product-info">
             <h1><?= escape($item['label']) ?></h1>
@@ -13,9 +11,11 @@
             <div class="product-vendeur-card">
                 <img src="/public/images/<?= escape($operator['avatar'] ?? 'avatar.jpeg') ?>" alt="avatar">
                 <div>
-                    <p class="vendeur-nom"><?= escape($operator['firstname']) ?> <?= escape($operator['lastname']) ?></p>
+                    <p class="vendeur-nom"><?= escape($operator['firstname']) ?> <?= escape($operator['lastname']) ?>
+                    </p>
                     <p class="vendeur-email">📧 <?= escape($operator['email'] ?? '') ?></p>
-                    <p class="vendeur-membre">Membre depuis <?= date('Y', strtotime($operator['created_at'] ?? 'now')) ?></p>
+                    <p class="vendeur-membre">Membre depuis
+                        <?= date('Y', strtotime($operator['created_at'] ?? 'now')) ?></p>
                 </div>
             </div>
 
@@ -25,6 +25,18 @@
             </div>
         </div>
     </div>
+
+    <div class="product-tags">
+    <?php if ($category): ?>
+        <span class="tag-pill tag-category"><?= escape($category['label']) ?></span>
+    <?php endif; ?>
+    <?php if ($theme): ?>
+        <span class="tag-pill tag-theme"><?= escape($theme['label']) ?></span>
+    <?php endif; ?>
+    <?php foreach ($tags as $tag): ?>
+        <span class="tag-pill"><?= escape($tag['label']) ?></span>
+    <?php endforeach; ?>
+</div>
 
     <div class="product-details">
         <h2>Détails du parfum</h2>

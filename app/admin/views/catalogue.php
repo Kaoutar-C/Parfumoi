@@ -1,31 +1,37 @@
-<section>
-    <h2>Catalogue</h2>
-    <form method="get" action="/catalogue">
-        <label>Rechercher un parfum</label><br>
-        <input type="text" name="search" value="<?= htmlspecialchars($search ?? '') ?>">
-        <button type="submit">Rechercher</button>
-    </form>
-</section>
+<?php
 
-<section>
-    <h2>Résultats</h2>
+require_once __DIR__ . '/../models/catalogue.php';
+require_once __DIR__ . '/../models/mon_compte.php';
 
-    <?php if (empty($items)): ?>
-        <p>Aucun parfum trouvé.</p>
-    <?php endif; ?>
+function catalogue_index($pdo)
+{
+    $categorie = $_GET['categorie'] ?? '';
+    $tri       = $_GET['tri'] ?? '';
+    $search    = $_GET['search'] ?? '';
+    $tag       = $_GET['tag'] ?? '';
+    $theme     = $_GET['theme'] ?? '';
 
-    <?php foreach ($items as $item): ?>
-        <article>
-            <h3><?= htmlspecialchars($item['label']) ?></h3>
-            <?php if (!empty($item['main_image'])): ?>
-                <img src="/images/<?= htmlspecialchars($item['main_image']) ?>" alt="<?= htmlspecialchars($item['label']) ?>" width="160">
-            <?php endif; ?>
-            <p><strong>Marque :</strong> <?= htmlspecialchars($item['brand_name'] ?? '') ?></p>
-            <p><strong>Prix :</strong> <?= htmlspecialchars($item['prix']) ?> €</p>
-            <p><strong>État :</strong> <?= htmlspecialchars($item['item_condition']) ?></p>
-            <p><?= htmlspecialchars($item['short_description'] ?? '') ?></p>
-            <p><a href="/catalogue/show/<?= $item['id'] ?>">Voir le produit</a></p>
-        </article>
-        <hr>
-    <?php endforeach; ?>
-</section>
+    $items      = get_all_items($pdo, $categorie, $tri, $search, $tag, $theme);
+    $tags       = get_all_tags($pdo);
+    $themes     = get_all_themes($pdo);
+    $categories = get_all_categories($pdo);
+
+    $ids_favoris = [];
+    if (is_logged()) {
+        $favoris     = get_favoris($pdo, $_SESSION['operator_id']);
+        $ids_favoris = array_map('intval', array_column($favoris, 'id'));
+    }
+
+    return render('app/views/catalogue.php', [
+        'items'       => $items,
+        'categorie'   => $categorie,
+        'tri'         => $tri,
+        'search'      => $search,
+        'tag'         => $tag,
+        'theme'       => $theme,
+        'tags'        => $tags,
+        'themes'      => $themes,
+        'categories'  => $categories,
+        'ids_favoris' => $ids_favoris,
+    ]);
+}

@@ -1,31 +1,22 @@
 <?php
 
+function brands_index($pdo)
+{
+    if (isset($_GET['delete'])) {
+        deleteBrand($pdo, $_GET['delete']);
+        redirect('/admin/brands');
+    }
 
+    if (is_post()) {
+        createBrand($pdo, $_POST);
+        redirect('/admin/brands');
+    }
 
-require_once __DIR__ . '/../../../config/data.php';
-require_once __DIR__ . '/../../admin/models/brand.php';
+    $search = $_GET['search'] ?? '';
+    $brands = getAllBrands($pdo, $search);
 
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: /admin/login');
-    exit;
+    return render(__DIR__ . '/../views/brands.php', [
+        'brands' => $brands,
+        'search' => $search,
+    ]);
 }
-
-if (isset($_GET['delete'])) {
-    deleteBrand($pdo, $_GET['delete']);
-    header('Location: /admin/brands');
-    exit;
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    createBrand($pdo, $_POST);
-    header('Location: /admin/brands');
-    exit;
-}
-
-$brands = getAllBrands($pdo);
-
-ob_start();
-require __DIR__ . '/../../views/admin/brands.php';
-$page_content = ob_get_clean();
-
-require __DIR__ . '/../../admin/views/_layout.php';

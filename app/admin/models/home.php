@@ -44,3 +44,23 @@ function adminCountPublishedItems(PDO $pdo): int
 {
     return (int) $pdo->query("SELECT COUNT(*) FROM item WHERE status = 'published'")->fetchColumn();
 }
+
+function adminCountBrands(PDO $pdo): int
+{
+    return (int) $pdo->query("SELECT COUNT(*) FROM brands")->fetchColumn();
+}
+
+function adminCountCategories(PDO $pdo): int
+{
+    return (int) $pdo->query("SELECT COUNT(*) FROM category")->fetchColumn();
+}
+
+function adminCountThemes(PDO $pdo): int
+{
+    return (int) $pdo->query("SELECT COUNT(*) FROM theme")->fetchColumn();
+}
+
+function adminCountTags(PDO $pdo): int
+{
+    return (int) $pdo->query("SELECT COUNT(*) FROM tag")->fetchColumn();
+}

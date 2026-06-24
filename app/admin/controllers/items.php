@@ -1,74 +1,57 @@
 <?php
 
-
-
-require_once __DIR__ . '/../../../config/data.php';
-require_once __DIR__ . '/../../admin/models/item.php';
-require_once __DIR__ . '/../../admin/models/brand.php';
-require_once __DIR__ . '/../../admin/models/operator.php';
-require_once __DIR__ . '/../../admin/models/reference.php';
-
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: /admin/login');
-    exit;
-}
-
-$action = $_GET['action'] ?? 'list';
-$id = $_GET['id'] ?? null;
-
-if ($action === 'delete' && $id) {
-    deleteAdminItem($pdo, $id);
-    header('Location: /admin/items');
-    exit;
-}
-
-if ($action === 'disable' && $id) {
-    disableAdminItem($pdo, $id);
-    header('Location: /admin/items');
-    exit;
-}
-
-if ($action === 'publish' && $id) {
-    publishAdminItem($pdo, $id);
-    header('Location: /admin/items');
-    exit;
-}
-
-if ($action === 'add' || $action === 'edit') {
-    $item = null;
-
-    if ($action === 'edit' && $id) {
-        $item = getAdminItemById($pdo, $id);
+function items_index($pdo)
+{
+    if (isset($_GET['delete'])) {
+        deleteAdminItem($pdo, $_GET['delete']);
+        redirect('/admin/items');
     }
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if ($action === 'add') {
-            createAdminItem($pdo, $_POST);
-        } else {
-            updateAdminItem($pdo, $id, $_POST);
-        }
-
-        header('Location: /admin/items');
-        exit;
+    if (isset($_GET['disable'])) {
+        disableAdminItem($pdo, $_GET['disable']);
+        redirect('/admin/items');
     }
 
-    $brands = getAllBrands($pdo);
-    $operators = getAllOperators($pdo);
-    $categories = getAllCategories($pdo);
-    $tags = getAllTags($pdo);
+    if (isset($_GET['publish'])) {
+        publishAdminItem($pdo, $_GET['publish']);
+        redirect('/admin/items');
+    }
 
-    ob_start();
-    require __DIR__ . '/../../admin/views/item_form.php';
-    $page_content = ob_get_clean();
+    if (is_post() && isset($_POST['action']) && $_POST['action'] === 'edit') {
+        updateAdminItem($pdo, $_POST['id'], $_POST);
+        redirect('/admin/items');
+    }
 
-    require __DIR__ . '/../../admin/views/_layout.php';
-    exit;
+    $item_edit = null;
+    if (isset($_GET['edit'])) {
+        $item_edit = getAdminItemById($pdo, $_GET['edit']);
+    }
+
+    $search = $_GET['search'] ?? '';
+    $items  = getAllAdminItems($pdo, $search);
+
+    return render(__DIR__ . '/../views/items.php', [
+        'items'     => $items,
+        'item_edit' => $item_edit,
+        'search'    => $search,
+    ]);
 }
 
-$items = getAllAdminItems($pdo);
+function items_draft($pdo)
+{
+    if (isset($_GET['publish'])) {
+        publishAdminItem($pdo, $_GET['publish']);
+        redirect('/admin/items/draft');
+    }
 
-ob_start();
-require __DIR__ . '/../../admin/views/items.php';
-$page_content = ob_get_clean();
+    if (isset($_GET['delete'])) {
+        deleteAdminItem($pdo, $_GET['delete']);
+        redirect('/admin/items/draft');
+    }
 
-require __DIR__ . '/../../admin/views/_layout.php';
+    $items = getAdminDraftItems($pdo);
+
+    return render(__DIR__ . '/../views/items_draft.php', [
+        'items' => $items,
+    ]);
+}

@@ -1,9 +1,11 @@
 <?php
 
-function getAllBrands($pdo)
+function getAllBrands($pdo, $search = '')
 {
-    $sql = "SELECT * FROM brands ORDER BY label ASC";
-    return $pdo->query($sql)->fetchAll();
+    $sql = "SELECT * FROM brands WHERE label LIKE ? ORDER BY label ASC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['%' . $search . '%']);
+    return $stmt->fetchAll();
 }
 
 function createBrand($pdo, $data)

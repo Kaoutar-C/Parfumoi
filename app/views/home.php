@@ -21,7 +21,7 @@
         </button>
     </form>
 
-    <p class="section-title">Ça pourrait vous intéresser</p>
+    <div style="height: 40px;"></div>
 
     <div class="grille">
         <?php foreach ($items as $item): ?>
@@ -30,16 +30,17 @@
                     <img src="/public/images/<?= escape($item['main_image'] ?? 'default.jpg') ?>" alt="<?= escape($item['label']) ?>">
                 </a>
                 <?php if (is_logged()): ?>
-                           
-                    <a href="/favoris/toggle/<?= $item['id'] ?>" 
-   class="btn-favori <?= in_array((int)$item['id'], $ids_favoris) ? 'favori-actif' : '' ?>">
-   <?= in_array((int)$item['id'], $ids_favoris) ? '♥' : '♡' ?>
-</a>
+                    <a href="/favoris/toggle/<?= $item['id'] ?>"
+                       class="btn-favori <?= in_array((int)$item['id'], $ids_favoris) ? 'favori-actif' : '' ?>">
+                        <?= in_array((int)$item['id'], $ids_favoris) ? '♥' : '♡' ?>
+                    </a>
                 <?php endif; ?>
                 <a href="/product/index/<?= $item['id'] ?>">
-                    <h2><?= escape($item['label']) ?></h2>
-                    <p><?= escape($item['brand_name'] ?? '') ?></p>
-                    <p><?= escape($item['price']) ?> €</p>
+                    <div class="article-body">
+                        <h2><?= escape($item['label']) ?></h2>
+                        <p><?= escape($item['brand_name'] ?? '') ?></p>
+                        <p><?= escape($item['price']) ?> €</p>
+                    </div>
                 </a>
             </article>
         <?php endforeach; ?>

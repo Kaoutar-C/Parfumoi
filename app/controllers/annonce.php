@@ -1,28 +1,26 @@
 <?php
 
-require_once __DIR__ . '/../models/annonce.php';
-
 function annonce_index($pdo)
 {
-    if (!isset($_SESSION['user_id'])) {
+    if (!is_logged()) {
         redirect('/checkin/login');
-    
     }
 
-    if (is_post()) {
-        create_annonce($pdo, $_POST, $_FILES, $_SESSION['operator_id']);
-        header('Location: /mon_compte/index');
-        exit;
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $brands_id = createBrandIfNotExists($pdo, trim($_POST['brand_label']));
+        $_POST['operator_id'] = $_SESSION['operator_id'];
+        createAnnonce($pdo, $_POST, $brands_id);
+        redirect('/mon_compte');
     }
 
+    $brands     = getAllBrands($pdo);
     $categories = get_all_categories($pdo);
-    $brands     = get_all_brands($pdo);
     $themes     = get_all_themes($pdo);
     $tags       = get_all_tags($pdo);
 
     return render('app/views/annonce.php', [
-        'categories' => $categories,
         'brands'     => $brands,
+        'categories' => $categories,
         'themes'     => $themes,
         'tags'       => $tags,
     ]);
@@ -30,13 +28,10 @@ function annonce_index($pdo)
 
 function annonce_delete($pdo, $id)
 {
-    if (!isset($_SESSION['operator_id'])) {
-        header('Location: /checkin/login');
-        exit;
+    if (!is_logged()) {
+        redirect('/checkin/login');
     }
 
-    $stmt = $pdo->prepare('DELETE FROM item WHERE id = ? AND operator_id = ?');
-    $stmt->execute([$id, $_SESSION['operator_id']]);
-    header('Location: /mon_compte/index');
-    exit;
+    deleteAnnonce($pdo, $id, $_SESSION['operator_id']);
+    redirect('/mon_compte');
 }

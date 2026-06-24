@@ -45,6 +45,14 @@
             <article>
                 <a href="/product/index/<?= $item['id'] ?>">
                     <img src="/public/images/<?= escape($item['main_image'] ?? 'default.jpg') ?>" alt="<?= escape($item['label']) ?>">
+                </a>
+                <?php if (is_logged()): ?>
+                    <a href="/favoris/toggle/<?= $item['id'] ?>"
+                       class="btn-favori <?= in_array((int)$item['id'], $ids_favoris) ? 'favori-actif' : '' ?>">
+                        <?= in_array((int)$item['id'], $ids_favoris) ? '♥' : '♡' ?>
+                    </a>
+                <?php endif; ?>
+                <a href="/product/index/<?= $item['id'] ?>">
                     <h2><?= escape($item['label']) ?></h2>
                     <p><?= escape($item['brand_name'] ?? '') ?></p>
                     <p><?= escape($item['price']) ?> €</p>
@@ -55,5 +63,16 @@
             <p>Aucun parfum trouvé.</p>
         <?php endif; ?>
     </div>
+
+    <div class="pagination">
+        <?php if ($page > 1): ?>
+            <a href="?page=<?= $page - 1 ?>&search=<?= urlencode($search) ?>&categorie=<?= $categorie ?>&tag=<?= $tag ?>&theme=<?= $theme ?>&tri=<?= $tri ?>">← Précédent</a>
+        <?php endif; ?>
+
+        <span>Page <?= $page ?> / <?= $totalPages ?></span>
+
+        <?php if ($page < $totalPages): ?>
+            <a href="?page=<?= $page + 1 ?>&search=<?= urlencode($search) ?>&categorie=<?= $categorie ?>&tag=<?= $tag ?>&theme=<?= $theme ?>&tri=<?= $tri ?>">Suivant →</a>
+        <?php endif; ?>
+    </div>
 </div>
-?>

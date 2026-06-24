@@ -1,74 +1,89 @@
-<h1>Déposer une annonce</h1>
+<div class="form-page-wrapper">
+    <div class="form-page">
+        <h1>Déposer une annonce</h1>
 
-<form method="POST" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
 
-    <label for="photo">Photo</label>
-    <input type="file" id="photo" name="photo" accept="image/*">
+            <label class="upload-zone" for="main_image">
+                <img id="preview" src="" alt="" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:12px;">
+                <span id="upload-text">+ ajouter photo</span>
+                <input type="file" name="main_image" id="main_image" accept="image/*">
+            </label>
 
-    <label for="label">Nom du parfum</label>
-    <input type="text" id="label" name="label" placeholder="Le nom de ton parfum" required>
+            <label>Marque du parfum</label>
+            <input type="text" name="brand_label" list="brands-list" required>
+            <datalist id="brands-list">
+                <?php foreach ($brands as $brand): ?>
+                    <option value="<?= htmlspecialchars($brand['label']) ?>">
+                <?php endforeach; ?>
+            </datalist>
 
-    <label for="short_description">Description</label>
-    <textarea id="short_description" name="short_description" placeholder="Ajoute des informations utiles"></textarea>
+            <label>Nom du parfum</label>
+            <input type="text" name="label" required>
 
-    <label for="brand_search">Marque</label>
-    <input type="text" id="brand_search" name="brand_label" list="brands_list" placeholder="Tape une marque...">
-    <datalist id="brands_list">
-        <?php foreach ($brands as $brand): ?>
-            <option value="<?= escape($brand['label']) ?>">
-        <?php endforeach; ?>
-    </datalist>
+            <label>Description</label>
+            <textarea name="short_description"></textarea>
 
-    <label for="category_id">Catégorie</label>
-    <select id="category_id" name="category_id" required>
-        <option value="">Sélectionne une catégorie</option>
-        <?php foreach ($categories as $category): ?>
-            <option value="<?= $category['id'] ?>"><?= escape($category['label']) ?></option>
-        <?php endforeach; ?>
-    </select>
+            <label>Prix (€)</label>
+            <input type="number" name="price" step="0.01" required>
 
-    <label for="theme_id">Occasion</label>
-    <select id="theme_id" name="theme_id" required>
-        <option value="">Sélectionne une occasion</option>
-        <?php foreach ($themes as $theme): ?>
-            <option value="<?= $theme['id'] ?>"><?= escape($theme['label']) ?></option>
-        <?php endforeach; ?>
-    </select>
+            <label>Numéro de série (batch code)</label>
+            <input type="text" name="batch_code" required>
 
-    <label for="tag_id">Famille olfactive</label>
-    <select id="tag_id" name="tag_id">
-        <option value="">Sélectionne une famille olfactive</option>
-        <?php foreach ($tags as $tag): ?>
-            <option value="<?= $tag['id'] ?>"><?= escape($tag['label']) ?></option>
-        <?php endforeach; ?>
-    </select>
+            <label>État</label>
+            <select name="item_condition">
+                <option value="neuf">Neuf</option>
+                <option value="comme_neuf">Comme neuf</option>
+                <option value="utilise">Utilisé</option>
+            </select>
 
-    <label for="price">Prix</label>
-    <input type="number" id="price" name="price" placeholder="0.00" step="0.01" min="0" required>
+            <label>Taille du flacon (ml)</label>
+            <select name="quantity">
+                <option value="15">15 ml</option>
+                <option value="30">30 ml</option>
+                <option value="50">50 ml</option>
+                <option value="75">75 ml</option>
+                <option value="100">100 ml</option>
+                <option value="125">125 ml</option>
+                <option value="150">150 ml</option>
+                <option value="175">175 ml</option>
+                <option value="200">200 ml</option>
+            </select>
 
-    <label for="batch_code">Numéro de série</label>
-    <input type="text" id="batch_code" name="batch_code" placeholder="Numéro de série">
+            <label>Quantité restante</label>
+            <select name="quantity_left">
+                <option value="1">0% - 25%</option>
+                <option value="2">25% - 50%</option>
+                <option value="3">50% - 70%</option>
+                <option value="4">70% - 80%</option>
+                <option value="5">80% - 90%</option>
+                <option value="6">90% - 100%</option>
+            </select>
 
-    <label for="contenance">Contenance (ml)</label>
-    <select id="contenance" name="contenance" required>
-        <option value="">Sélectionne une contenance</option>
-        <option value="25">25 ml</option>
-        <option value="50">50 ml</option>
-        <option value="75">75 ml</option>
-        <option value="100">100 ml</option>
-        <option value="125">125 ml</option>
-        <option value="150">150 ml</option>
-        <option value="200">200 ml</option>
-    </select>
+            <label>Catégorie</label>
+            <select name="category_id">
+                <?php foreach ($categories as $cat): ?>
+                    <option value="<?= $cat['id'] ?>"><?= htmlspecialchars($cat['label']) ?></option>
+                <?php endforeach; ?>
+            </select>
 
-    <label for="item_condition">État</label>
-    <select id="item_condition" name="item_condition" required>
-        <option value="neuf">Neuf</option>
-        <option value="comme_neuf">Comme neuf</option>
-        <option value="utilise">Utilisé</option>
-    </select>
+            <label>Quand le porter ?</label>
+            <select name="theme_id">
+                <?php foreach ($themes as $theme): ?>
+                    <option value="<?= $theme['id'] ?>"><?= htmlspecialchars($theme['label']) ?></option>
+                <?php endforeach; ?>
+            </select>
 
-    <button type="submit" name="status" value="published">Publier</button>
-    <button type="submit" name="status" value="draft">Sauvegarder en brouillon</button>
+            <label>Famille olfactive</label>
+            <select name="tag_id">
+                <?php foreach ($tags as $tag): ?>
+                    <option value="<?= $tag['id'] ?>"><?= htmlspecialchars($tag['label']) ?></option>
+                <?php endforeach; ?>
+            </select>
 
-</form>
+            <button type="submit">Déposer l'annonce</button>
+        </form>
+
+        <p>Votre annonce sera vérifiée avant d'être publiée.</p>
+    </div>
+</div>

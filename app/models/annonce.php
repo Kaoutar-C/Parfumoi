@@ -1,81 +1,67 @@
 <?php
 
-function get_or_create_brand($pdo, $label)
+function createAnnonce($pdo, $data, $brands_id)
 {
-    if (empty($label)) return null;
+    $slug = strtolower(trim($data['label']));
+    $slug = iconv('UTF-8', 'ASCII//TRANSLIT', $slug);
+    $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
+    $slug = trim($slug, '-');
 
-    $stmt = $pdo->prepare('SELECT id FROM brands WHERE label = ?');
-    $stmt->execute([$label]);
+    $main_image = 'default.jpg';
+    if (!empty($_FILES['main_image']['name'])) {
+        $ext = pathinfo($_FILES['main_image']['name'], PATHINFO_EXTENSION);
+        $main_image = $slug . '.' . $ext;
+        move_uploaded_file($_FILES['main_image']['tmp_name'], __DIR__ . '/../../public/images/' . $main_image);
+    }
+
+    $stmt = $pdo->prepare(
+        "INSERT INTO item (slug, label, price, short_description, batch_code, item_condition, quantity, quantity_left, status, brands_id, category_id, theme_id, operator_id, main_image, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'draft', ?, ?, ?, ?, ?, NOW(), NOW())"
+    );
+    $stmt->execute([
+        $slug,
+        $data['label'],
+        $data['price'],
+        $data['short_description'],
+        $data['batch_code'],
+        $data['item_condition'],
+        $data['quantity'],
+        $data['quantity_left'],
+        $brands_id,
+        $data['category_id'],
+        $data['theme_id'],
+        $data['operator_id'],
+        $main_image,
+    ]);
+
+    $item_id = $pdo->lastInsertId();
+
+    if (!empty($data['tag_id'])) {
+        $stmt = $pdo->prepare("INSERT INTO taguer (item_id, tag_id) VALUES (?, ?)");
+        $stmt->execute([$item_id, $data['tag_id']]);
+    }
+
+    return $item_id;
+}
+
+function createBrandIfNotExists($pdo, $brand_label)
+{
+    $stmt = $pdo->prepare("SELECT * FROM brands WHERE LOWER(label) = LOWER(?)");
+    $stmt->execute([$brand_label]);
     $brand = $stmt->fetch();
 
     if ($brand) {
         return $brand['id'];
     }
 
-    $slug = strtolower(str_replace(' ', '-', $label));
-    $stmt = $pdo->prepare('INSERT INTO brands (slug, label) VALUES (?, ?)');
-    $stmt->execute([$slug, $label]);
+    $slug = strtolower(preg_replace('/[^a-z0-9]+/', '-', iconv('UTF-8', 'ASCII//TRANSLIT', $brand_label)));
+    $stmt = $pdo->prepare("INSERT INTO brands (slug, label) VALUES (?, ?)");
+    $stmt->execute([$slug, $brand_label]);
     return $pdo->lastInsertId();
 }
 
-function create_annonce($pdo, $data, $files, $operator_id)
+function deleteAnnonce($pdo, $id, $operator_id)
 {
-    $main_image = 'default.jpg';
-
-    if (!empty($files['photo']['name'])) {
-        $extension  = pathinfo($files['photo']['name'], PATHINFO_EXTENSION);
-        $main_image = uniqid() . '.' . $extension;
-        move_uploaded_file($files['photo']['tmp_name'], 'public/images/' . $main_image);
-    }
-
-    $slug      = strtolower(str_replace(' ', '-', $data['label']));
-    $brands_id = get_or_create_brand($pdo, $data['brand_label'] ?? '');
-
-    $stmt = $pdo->prepare(
-        'INSERT INTO item (slug, label, short_description, price, batch_code, quantity, item_condition, status, main_image, category_id, brands_id, theme_id, operator_id, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())'
-    );
-
-    $stmt->execute([
-        $slug,
-        $data['label'],
-        $data['short_description'] ?? '',
-        $data['price'],
-        $data['batch_code'] ?? '',
-        $data['contenance'],
-        $data['item_condition'] ?? 'neuf',
-        $data['status'] ?? 'published',
-        $main_image,
-        $data['category_id'],
-        $brands_id,
-        $data['theme_id'],
-        $operator_id,
-    ]);
-
-    $item_id = $pdo->lastInsertId();
-
-    if (!empty($data['tag_id'])) {
-        $stmt = $pdo->prepare('INSERT INTO taguer (item_id, tag_id) VALUES (?, ?)');
-        $stmt->execute([$item_id, $data['tag_id']]);
-    }
-}
-
-function get_all_categories($pdo)
-{
-    return $pdo->query('SELECT * FROM category ORDER BY label ASC')->fetchAll();
-}
-
-function get_all_brands($pdo)
-{
-    return $pdo->query('SELECT * FROM brands ORDER BY label ASC')->fetchAll();
-}
-
-function get_all_themes($pdo)
-{
-    return $pdo->query('SELECT * FROM theme ORDER BY label ASC')->fetchAll();
-}
-
-function get_all_tags($pdo)
-{
-    return $pdo->query('SELECT * FROM tag ORDER BY label ASC')->fetchAll();
+    $stmt = $pdo->prepare("UPDATE item SET status = 'deleted' WHERE id = ? AND operator_id = ?");
+    return $stmt->execute([$id, $operator_id]);
 }

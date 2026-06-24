@@ -1,11 +1,9 @@
 <?php
 
-require_once __DIR__ . '/../models/catalogue.php';
-require_once __DIR__ . '/../models/mon_compte.php';
 
 function home_index(PDO $pdo): string
 {
-   $items = array_slice(get_all_items($pdo, '', '', '', '', ''), 0, 3);
+    $items       = array_slice(get_all_items($pdo, '', '', '', '', ''), 0, 3);
     $categories  = get_all_categories($pdo);
     $ids_favoris = [];
 

@@ -1,6 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../models/mon_compte.php';
 
 function favoris_toggle($pdo, $id)
 {

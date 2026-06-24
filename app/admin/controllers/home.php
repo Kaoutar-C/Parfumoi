@@ -10,6 +10,10 @@ function home_index($pdo) {
     $data['totalDraftItems']        = adminCountDraftItems($pdo);
     $data['totalOperators']         = adminCountOperators($pdo);
     $data['totalOperatorsWithItem'] = adminCountOperatorsWithItem($pdo);
+    $data['totalBrands']            = adminCountBrands($pdo);
+    $data['totalCategories']        = adminCountCategories($pdo);
+    $data['totalThemes']            = adminCountThemes($pdo);
+    $data['totalTags']              = adminCountTags($pdo);
 
-    return render('app/admin/views/home.php', $data);
+    return render(__DIR__ . '/../views/home.php', $data);
 }
