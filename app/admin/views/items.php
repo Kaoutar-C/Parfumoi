@@ -1,5 +1,16 @@
 <h1>Annonces</h1>
 
+<?php
+$paliers = [
+    1 => '0% - 25%',
+    2 => '25% - 50%',
+    3 => '50% - 70%',
+    4 => '70% - 80%',
+    5 => '80% - 90%',
+    6 => '90% - 100%',
+];
+?>
+
 <?php if ($item_edit): ?>
 <section>
     <h2>Modifier l'annonce</h2>
@@ -20,7 +31,7 @@
             <option value="comme_neuf" <?= $item_edit['item_condition'] === 'comme_neuf' ? 'selected' : '' ?>>Comme neuf</option>
             <option value="utilise" <?= $item_edit['item_condition'] === 'utilise' ? 'selected' : '' ?>>Utilisé</option>
         </select>
-        <input type="number" name="quantity" value="<?= htmlspecialchars($item_edit['quantity'] ?? '') ?>" placeholder="Quantité (%)">
+        <input type="number" name="quantity" value="<?= htmlspecialchars($item_edit['quantity'] ?? '') ?>" placeholder="Taille du flacon (ml)">
         <select name="status">
             <option value="draft" <?= $item_edit['status'] === 'draft' ? 'selected' : '' ?>>Brouillon</option>
             <option value="published" <?= $item_edit['status'] === 'published' ? 'selected' : '' ?>>Publié</option>
@@ -44,7 +55,7 @@
                     <th>Marque</th>
                     <th>Prix</th>
                     <th>État</th>
-                    <th>Qté</th>
+                    <th>Flacon</th>
                     <th>Détails</th>
                     <th>Statut</th>
                     <th>Vendeur</th>
@@ -58,13 +69,19 @@
                     <td data-label="Marque"><?= htmlspecialchars($item['brand_name'] ?? '') ?></td>
                     <td data-label="Prix"><?= htmlspecialchars($item['price']) ?> €</td>
                     <td data-label="État"><?= htmlspecialchars($item['item_condition'] ?? '') ?></td>
-                    <td data-label="Qté"><?= htmlspecialchars($item['quantity'] ?? '') ?> %</td>
+                    <td data-label="Flacon">
+                        <?= htmlspecialchars($item['quantity'] ?? '') ?> ml<br>
+                        <?= $paliers[$item['quantity_left']] ?? '' ?>
+                    </td>
                     <td data-label="Détails">
                         <?php if (!empty($item['category_label'])): ?>
                             <span class="tag-pill tag-category"><?= htmlspecialchars($item['category_label']) ?></span>
                         <?php endif; ?>
                         <?php if (!empty($item['theme_label'])): ?>
                             <span class="tag-pill tag-theme"><?= htmlspecialchars($item['theme_label']) ?></span>
+                        <?php endif; ?>
+                        <?php if (!empty($item['tag_label'])): ?>
+                            <span class="tag-pill"><?= htmlspecialchars($item['tag_label']) ?></span>
                         <?php endif; ?>
                     </td>
                     <td data-label="Statut"><?= htmlspecialchars($item['status']) ?></td>

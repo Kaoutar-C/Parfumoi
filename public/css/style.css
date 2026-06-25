@@ -147,7 +147,7 @@ a {
 /* ===== CARTES PRODUITS ===== */
 article {
     background-color: white;
-    border-radius: 6px;
+    border-radius: 0;
     overflow: hidden;
     border: 2px solid #9B59B6;
     transition: box-shadow 0.2s;
@@ -206,6 +206,24 @@ article p {
     border-radius: 20px;
     display: inline-block;
     margin: 8px 0 0 8px;
+}
+
+/* ===== BOUTON SUPPRIMER ANNONCE ===== */
+article .btn-supprimer-annonce {
+    display: block;
+    text-align: center;
+    padding: 8px 10px;
+    background-color: #C0392B;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    border-top: 2px solid #9B59B6;
+    text-decoration: none;
+}
+
+article .btn-supprimer-annonce:hover {
+    background-color: #96281B;
+    color: white;
 }
 
 .btn-favori {

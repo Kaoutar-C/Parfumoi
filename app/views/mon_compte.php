@@ -26,6 +26,7 @@
                         <p><?= escape($item['price']) ?> €</p>
                     </div>
                 </a>
+                <a href="/annonce/delete/<?= $item['id'] ?>" class="btn-supprimer-annonce">Supprimer</a>
             </article>
         <?php endforeach; ?>
         <?php if (empty($items)): ?>

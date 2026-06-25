@@ -5,12 +5,15 @@ function getAllAdminItems($pdo, $search = '')
     $sql = "SELECT item.*, brands.label AS brand_name, 
             operator.firstname, operator.lastname,
             category.label AS category_label,
-            theme.label AS theme_label
+            theme.label AS theme_label,
+            tag.label AS tag_label
             FROM item
             LEFT JOIN brands ON item.brands_id = brands.id
             LEFT JOIN operator ON item.operator_id = operator.id
             LEFT JOIN category ON item.category_id = category.id
             LEFT JOIN theme ON item.theme_id = theme.id
+            LEFT JOIN taguer ON item.id = taguer.item_id
+            LEFT JOIN tag ON taguer.tag_id = tag.id
             WHERE item.label LIKE ?
             AND item.status != 'deleted'
             ORDER BY item.id DESC";
