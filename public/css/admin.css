@@ -127,10 +127,12 @@ body.admin {
 
 /* ========== TABLEAUX ADMIN ========== */
 .table-wrapper {
+    overflow-x: auto;
+    overflow-y: auto;
     border-radius: 8px;
     border: 1px solid #E4C7FC;
     margin-top: 12px;
-    width: 100%;
+    max-width: 100%;
 }
 
 .admin-table {
@@ -152,7 +154,6 @@ body.admin {
     text-transform: uppercase;
     letter-spacing: 1px;
     text-align: left;
-    white-space: nowrap;
 }
 
 .admin-table tbody tr:nth-child(even) {
@@ -234,6 +235,11 @@ body.admin {
     background-color: #CA6F1E;
 }
 
+/* Lien déconnexion dans la liste — caché sur desktop */
+.sidebar-logout-mobile {
+    display: none;
+}
+
 /* ========== BURGER ADMIN ========== */
 .admin-burger {
     display: none;
@@ -264,13 +270,24 @@ body.admin {
         display: flex;
     }
 
+    .sidebar-logout-mobile {
+        display: block;
+    }
+
+    .sidebar > .sidebar-logout {
+        display: none;
+    }
+
     .sidebar {
         position: fixed;
         top: 0;
         left: -220px;
-        height: 100vh;
+        height: 100%;
+        min-height: 100vh;
         z-index: 100;
         transition: left 0.3s ease;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
     }
 
     .sidebar.open {
@@ -352,5 +369,13 @@ body.admin {
     .admin-table {
         min-width: unset;
         width: 100%;
+    }
+
+    .sidebar-logout-mobile {
+        display: block;
+    }
+
+    .sidebar > .sidebar-logout {
+        display: none;
     }
 }

@@ -30,6 +30,7 @@
                     <li><a href="/admin/cat_them_tag">Catégories / Thèmes / Tags</a></li>
                     <li><a href="/admin/operators">Opérateurs</a></li>
                     <li><a href="/home" class="sidebar-logout">Voir le site</a></li>
+                    <li class="sidebar-logout-mobile"><a href="/checkin/logout">Se déconnecter</a></li>
                 </ul>
             </nav>
             <a href="/checkin/logout" class="sidebar-logout">Se déconnecter</a>

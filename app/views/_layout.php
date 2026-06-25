@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Parfumoi — Plateforme de revente de parfums de niche entre particuliers. Achetez et vendez vos fragrances avec vérification anti-contrefaçon.">
     <title>Parfumoi</title>
     <link rel="stylesheet" href="/public/css/navbar_footer.css">
     <link rel="stylesheet" href="/public/css/style.css">
@@ -12,7 +13,7 @@
 <body>
 
     <nav class="navbar">
-        <button class="burger" id="burger">
+        <button class="burger" id="burger" aria-label="Menu de navigation">
             <span></span>
             <span></span>
             <span></span>
@@ -23,7 +24,8 @@
         </a>
 
         <form action="/catalogue/index" method="get" class="nav-search">
-            <input type="text" name="search" placeholder="Rechercher un parfum...">
+            <label for="search" class="sr-only">Rechercher un parfum</label>
+            <input type="text" id="search" name="search" placeholder="Rechercher un parfum...">
             <button type="submit" class="nav-btn">Rechercher</button>
         </form>
 
